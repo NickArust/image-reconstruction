@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reconstruction Gallery</title>
+  <style>
+    :root {
+      --bg: #f4efe8;
+      --panel: rgba(255, 251, 245, 0.92);
+      --panel-strong: #fffaf4;
+      --ink: #211a15;
+      --muted: #6b6259;
+      --line: #d9c7b6;
+      --accent: #a44827;
+      --shadow: 0 18px 48px rgba(54, 33, 16, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+      background:
+        radial-gradient(circle at top right, rgba(216, 168, 120, 0.22), transparent 28%),
+        linear-gradient(180deg, #f7f2ea 0%, #efe3d1 100%);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(1400px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .hero {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255, 251, 245, 0.97), rgba(243, 229, 212, 0.96));
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2.1rem, 4vw, 3.7rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.55;
+    }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin: 18px 0 26px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 250, 244, 0.82);
+      box-shadow: var(--shadow);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 220px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .field select {
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-strong);
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel-strong);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .topbar-note {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .method-section {
+      margin-top: 26px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .method-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .method-header h2 {
+      margin: 0;
+      font-size: clamp(1.55rem, 2vw, 2rem);
+      letter-spacing: -0.03em;
+    }
+
+    .method-header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      display: block;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel-strong);
+      text-decoration: none;
+      cursor: zoom-in;
+      box-shadow: 0 12px 28px rgba(49, 30, 16, 0.08);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .card:hover,
+    .card:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(164, 72, 39, 0.45);
+      box-shadow: 0 16px 34px rgba(49, 30, 16, 0.13);
+    }
+
+    .card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #16110d;
+    }
+
+    .card-body {
+      padding: 12px 14px 14px;
+    }
+
+    .card-title {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .card-meta {
+      display: inline-flex;
+      margin: 0 0 8px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(164, 72, 39, 0.08);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .card-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .lightbox[hidden] {
+      display: none;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(21, 16, 11, 0.84);
+      backdrop-filter: blur(6px);
+    }
+
+    .lightbox-dialog {
+      position: relative;
+      width: min(1400px, 100%);
+      max-height: 100%;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 24px;
+      background: rgba(31, 24, 18, 0.96);
+      box-shadow: 0 22px 54px rgba(0, 0, 0, 0.35);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font: inherit;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .lightbox-close:hover,
+    .lightbox-close:focus-visible {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .lightbox img {
+      display: block;
+      width: 100%;
+      max-height: min(78vh, 1100px);
+      object-fit: contain;
+      border-radius: 16px;
+      background: #0f0b08;
+    }
+
+    .lightbox-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: 14px;
+      color: #f4eadf;
+    }
+
+    .lightbox-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .lightbox-copy {
+      margin: 0;
+      color: rgba(244, 234, 223, 0.78);
+      font-size: 0.95rem;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .shell {
+        width: min(100% - 18px, 1400px);
+      }
+
+      .hero,
+      .method-section {
+        padding: 18px;
+      }
+
+      .topbar {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <h1>Reconstruction Figure Gallery</h1>
+      <p>
+        This page groups the generated reconstruction figures by method. Each card opens the full-size image in an
+        in-page viewer, so the professor can browse the full gallery without downloading files or opening slides.
+      </p>
+    </section>
+
+    <section class="topbar">
+      <div class="toolbar">
+        <div class="field">
+          <label for="methodPicker">Method View</label>
+          <select id="methodPicker">
+            <option value="all">Show all methods</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <nav id="methodNav" class="pills" aria-label="Method navigation"></nav>
+        <div id="counts" class="topbar-note"></div>
+      </div>
+    </section>
+
+    <div id="gallery"></div>
+
+    <div id="lightbox" class="lightbox" hidden aria-hidden="true">
+      <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+        <button id="lightboxClose" class="lightbox-close" type="button" aria-label="Close image viewer">×</button>
+        <img id="lightboxImage" alt="">
+        <div class="lightbox-meta">
+          <div>
+            <p id="lightboxTitle" class="lightbox-title"></p>
+            <p id="lightboxCopy" class="lightbox-copy"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer">
+      Static gallery generated from <code>results/slurm_run/figures/reconstruction_gallery_by_method</code>.
+    </p>
+  </main>
+
+  <script>
+    const methods = [
+      {
+        id: "landweber",
+        title: "Landweber",
+        count: 24,
+        copy: "Iterative gradient-style reconstruction results."
+      },
+      {
+        id: "richardson_lucy",
+        title: "Richardson-Lucy",
+        count: 24,
+        copy: "Poisson-inspired iterative deconvolution results."
+      },
+      {
+        id: "tikhonov",
+        title: "Tikhonov",
+        count: 24,
+        copy: "Regularized inverse reconstruction results."
+      },
+      {
+        id: "wiener",
+        title: "Wiener",
+        count: 24,
+        copy: "Frequency-domain reconstruction results."
+      }
+    ];
+
+    const basePath = "results/slurm_run/figures/reconstruction_gallery_by_method";
+    const gallery = document.getElementById("gallery");
+    const nav = document.getElementById("methodNav");
+    const counts = document.getElementById("counts");
+    const methodPicker = document.getElementById("methodPicker");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const lightboxTitle = document.getElementById("lightboxTitle");
+    const lightboxCopy = document.getElementById("lightboxCopy");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    function imagePath(methodId, index) {
+      const label = String(index).padStart(2, "0");
+      return `${basePath}/${methodId}/reconstruction_gallery_${label}.png`;
+    }
+
+    function buildNav() {
+      for (const method of methods) {
+        const pill = document.createElement("a");
+        pill.className = "pill";
+        pill.href = `#${method.id}`;
+        pill.textContent = `${method.title} (${method.count})`;
+        nav.appendChild(pill);
+
+        const option = document.createElement("option");
+        option.value = method.id;
+        option.textContent = method.title;
+        methodPicker.appendChild(option);
+      }
+    }
+
+    function buildSection(method) {
+      const section = document.createElement("section");
+      section.className = "method-section";
+      section.id = method.id;
+
+      const header = document.createElement("div");
+      header.className = "method-header";
+      header.innerHTML = `
+        <div>
+          <h2>${method.title}</h2>
+          <p>${method.copy}</p>
+        </div>
+        <p>${method.count} figures</p>
+      `;
+      section.appendChild(header);
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+
+      for (let index = 1; index <= method.count; index += 1) {
+        const href = imagePath(method.id, index);
+        const card = document.createElement("a");
+        card.className = "card";
+        card.href = href;
+        card.dataset.image = href;
+        card.dataset.title = `${method.title} Figure ${String(index).padStart(2, "0")}`;
+        card.dataset.copy = `Case ${String(index).padStart(2, "0")} from the ${method.title} gallery.`;
+        card.innerHTML = `
+          <img src="${href}" alt="${method.title} figure ${index}" loading="lazy">
+          <div class="card-body">
+            <p class="card-meta">${method.title}</p>
+            <p class="card-title">${method.title} Figure ${String(index).padStart(2, "0")}</p>
+            <p class="card-copy">Case ${String(index).padStart(2, "0")} from the ${method.title} gallery. Click to expand.</p>
+          </div>
+        `;
+        card.addEventListener("click", (event) => {
+          event.preventDefault();
+          openLightbox(card.dataset.image, card.dataset.title, card.dataset.copy);
+        });
+        grid.appendChild(card);
+      }
+
+      section.appendChild(grid);
+      gallery.appendChild(section);
+    }
+
+    function openLightbox(src, title, copy) {
+      lightboxImage.src = src;
+      lightboxImage.alt = title;
+      lightboxTitle.textContent = title;
+      lightboxCopy.textContent = copy;
+      lightbox.hidden = false;
+      lightbox.setAttribute("aria-hidden", "false");
+      lightboxClose.focus();
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.src = "";
+      document.body.style.overflow = "";
+    }
+
+    function updateVisibleMethods(selectedMethod) {
+      for (const method of methods) {
+        const section = document.getElementById(method.id);
+        const visible = selectedMethod === "all" || selectedMethod === method.id;
+        section.classList.toggle("hidden", !visible);
+      }
+
+      if (selectedMethod !== "all") {
+        document.getElementById(selectedMethod).scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    buildNav();
+    for (const method of methods) {
+      buildSection(method);
+    }
+
+    const total = methods.reduce((sum, method) => sum + method.count, 0);
+    counts.textContent = `${methods.length} methods • ${total} figures`;
+    methodPicker.addEventListener("change", (event) => {
+      updateVisibleMethods(event.target.value);
+    });
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !lightbox.hidden) {
+        closeLightbox();
+      }
+    });
+  </script>
+</body>
+</html>
